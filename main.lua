@@ -1,13 +1,10 @@
--- This was my first time ever using the drawing library, there's probably 200 issues I haven't found yet. Please tell me if there are any problems.
-
-
 local Players = game:GetService("Players")
 
 local ESP = {
-    Enabled = true,
+    Enabled = false,
     Settings = {
         RemoveOnDeath = true,
-        MaxDistance = 300, -- Max Distance for esp to render (IN METERS).
+        MaxDistance = 1000, -- Max Distance for esp to render (IN METERS).
         MaxBoxSize = Vector3.new(15, 15, 0), -- Max size for ESP boxes.
         DestroyOnRemove = true, -- Whether the ESP objects should be deleted when the character is parented to nil, change this if you want.
         TeamColors = false, -- Whether or not the ESP color is based on team colors.
@@ -15,26 +12,26 @@ local ESP = {
         BoxTopOffset = Vector3.new(0, 1, 0), -- Offset for where the top of the box should be
         
         Boxes = {
-            Enabled = true,
-            Color = Color3.new(1, 0, 1),
+            Enabled = false,
+            Color = Color3.new(1, 0, 0),
             Thickness = 1,
         },
         Names = {
             Distance = true,
-            Health = true, -- Adds health values to the nametag.
-            Enabled = true,
-            Resize = true, -- Resizes the text based on the distance from the camera to the player so text doesn't get ridiculously large the further you are from the target.
+            Health = false, -- Adds health values to the nametag.
+            Enabled = false,
+            Resize = false, -- Resizes the text based on the distance from the camera to the player so text doesn't get ridiculously large the further you are from the target.
             ResizeWeight = 0.05, -- How quickly names are resized based on the distance from the camera.
-            Color = Color3.new(1, 1, 1),
+            Color = Color3.new(1, 0, 0),
             Size = 18,
             Font = 1,
             Center = true,
             Outline = true,
         },
         Tracers = {
-            Enabled = true,
+            Enabled = false,
             Thickness = 0,
-            Color = Color3.new(1, 0, 1),
+            Color = Color3.new(1, 0, 0),
         }
     },
     Objects = {} -- Table of ESP objects that you can read and do fun stuff with, however, editing settings changes the settings for every object at the same time so this is only needed if you want to set settings for individual targets.
@@ -477,10 +474,9 @@ function Object:Refresh()
     end
 end
 
-game.RunService.Stepped:Connect(function()
+game.RunService.Stepped:Connect(LPH_NO_VIRTUALIZE(function()
     for i, Object in next, ESP.Objects do
         Object:Refresh()
     end
-end)
-
+end))
 return ESP
